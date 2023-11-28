@@ -10,7 +10,7 @@ app.use(bodyParser.json()); // for json body
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // allow requests from any url/origin
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE"); // Allow All HTTP methods
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // allo
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // this allow client to setHeaders
   next()
 });
 
