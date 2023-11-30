@@ -3,7 +3,9 @@ const Post = require("../models/post");
 exports.getPosts = (req, res, next) => {
   Post.find()
     .then((posts) => {
-      res.status(200).json({ message: "Fetched Posts Successfully.", posts: posts });
+      res
+        .status(200)
+        .json({ message: "Fetched Posts Successfully.", posts: posts });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -34,11 +36,19 @@ exports.createPost = (req, res, next) => {
     error.statusCode = 422;
     throw error;
   }
+
+  if (!req.file) {
+    const error = new Error("No Image Provided.");
+    error.statusCode = 422;
+    throw error;
+  }
+
+  const imageUrl = req.file.path.replace("\\", "/");
   const { title, content } = req.body;
   const post = new Post({
     title,
     content,
-    imageUrl: "images/duck.jpg",
+    imageUrl: imageUrl,
     creator: { name: "ikram" },
   });
   post
