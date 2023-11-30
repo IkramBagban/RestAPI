@@ -19,10 +19,10 @@ exports.createPost = (req, res, next) => {
   const errors = validationResult(req); // checking validation result.
   if (!errors.isEmpty()) {
     // if body is not valid and has errors it will send some error response.
-    return res.status(422).json({
-      message: "Validation Failed, Entered Data Is Incorrect.",
-      errors: errors.array(),
-    });
+
+    const error =   new Error("Validation Failed, Entered Data Is Incorrect.")
+    error.statusCode = 422;
+    throw error
   }
   const { title, content } = req.body;
   const post = new Post({
@@ -41,5 +41,10 @@ exports.createPost = (req, res, next) => {
         post: result,
       });
     })
-    .catch((e) => console.log(e));
+    .catch((e) => {
+      if(!e.statusCode){
+        e.statusCode = 500;
+      }
+      next(err)
+    });
 };
