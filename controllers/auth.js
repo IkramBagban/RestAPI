@@ -1,6 +1,17 @@
-const express = require("express");
-const router = express.Router();
+const { validationResult} = require('express-validator')
+const User = require('../models/user')
 
-router.put("/signup");
+exports.signup = (req,res,next)=>{
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        const error = new Error("Validation Failed.")
+        error.statusCode = 422;
+        error.data = error.array();
+        throw error;
+    }
 
-module.exports = router;
+    const email = req.body.email
+    const name = req.body.name
+    const password = req.body.password
+
+}
